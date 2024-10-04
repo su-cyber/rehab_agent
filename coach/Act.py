@@ -127,4 +127,4 @@ class Act:
 
         :param message: The message to display (e.g., "Flexing", "Extending").
         """
-        print(f"Feedback: {message}")  # For now, print to console, can be extended with GUI feedback.
+        print(f"Console Feedback: {message}")  # For now, print to console, can be extended with GUI feedback.
