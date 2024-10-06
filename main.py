@@ -1,6 +1,8 @@
 import cv2
 import tkinter as tk
 from tkinter import messagebox
+from tkinter import PhotoImage  # For using icons
+from PIL import Image, ImageTk
 from coach import Sense, Think, Act
 import pyttsx3
 import subprocess
@@ -9,13 +11,19 @@ import sys
 def start_memory_game():
     """Function to start the memory game."""
     python_executable = sys.executable
-    subprocess.Popen([python_executable, 'coach\memory_game.py'])  # Adjust path if needed
+    subprocess.Popen([python_executable, 'coach/memory_game.py'])  # Adjust path if needed
 
 class ExerciseApp:
 
     def __init__(self, root):
         self.root = root
-        self.root.title("Exercise and Memory Game for Eleanor")
+        self.root.title("Rehabilitation Agent")
+        self.root.geometry("500x600")
+        self.root.config(bg="#2c3e50")  # Set background color
+        
+        # Add an icon for the window (optional)
+        # self.root.iconphoto(False, PhotoImage(file='path_to_icon.png'))
+
         self.exercise_choice = None
         self.engine = pyttsx3.init()
 
@@ -23,21 +31,43 @@ class ExerciseApp:
         self.create_widgets()
 
     def create_widgets(self):
-        # Create and place labels and buttons
-        label = tk.Label(self.root, text="Choose your exercise or game:", font=('Helvetica', 18))
+        # Create and place labels and buttons with better styling
+        label = tk.Label(self.root, text="Choose your exercise:", font=('Helvetica', 18, 'bold'),
+                         fg="#ecf0f1", bg="#2c3e50")
         label.pack(pady=20)
 
-        arm_button = tk.Button(self.root, text="Arm Exercise", font=('Helvetica', 14), command=self.start_arm_exercise)
-        arm_button.pack(pady=10)
+        # Customizing buttons
+        button_style = {"font": ('Helvetica', 14, 'bold'),
+                        "bg": "#e74c3c", "fg": "#ecf0f1", "activebackground": "#c0392b", "bd": 0,
+                        "relief": "flat", "highlightthickness": 0, "padx": 10, "pady": 5}
+        
+        # Arm Exercise Button
+        arm_button = tk.Button(self.root, text="Arm Exercise", command=self.start_arm_exercise, **button_style)
+        arm_button.pack(pady=15, ipadx=20, ipady=5)
 
-        leg_button = tk.Button(self.root, text="Leg Exercise", font=('Helvetica', 14), command=self.start_leg_exercise)
-        leg_button.pack(pady=10)
+        # Leg Exercise Button
+        leg_button = tk.Button(self.root, text="Leg Exercise", command=self.start_leg_exercise, **button_style)
+        leg_button.pack(pady=15, ipadx=20, ipady=5)
 
-        sit_stand_button = tk.Button(self.root, text="Sit-Stand Exercise", font=('Helvetica', 14), command=self.start_sit_stand_exercise)
-        sit_stand_button.pack(pady=10)
+        # Sit-Stand Exercise Button
+        sit_stand_button = tk.Button(self.root, text="Sit-Stand Exercise", command=self.start_sit_stand_exercise, **button_style)
+        sit_stand_button.pack(pady=15, ipadx=20, ipady=5)
 
-        memory_game_button = tk.Button(self.root, text="Memory Game", font=('Helvetica', 14), command=self.start_memory_game)
-        memory_game_button.pack(pady=10)
+        # Memory Game Button
+        memory_game_button = tk.Button(self.root, text="Memory Excercise", command=self.start_memory_game, **button_style)
+        memory_game_button.pack(pady=15, ipadx=20, ipady=5)
+
+        try:
+            logo = Image.open("coach/assets/rehab_logo.png")  
+            logo = logo.resize((300, 300))  
+            logo_img = ImageTk.PhotoImage(logo)
+
+            logo_label = tk.Label(self.root, image=logo_img, bg="#2c3e50")  
+            logo_label.image = logo_img  
+            logo_label.pack(pady=20)
+        except Exception as e:
+            print(f"Error loading logo: {e}")
+
 
     def start_arm_exercise(self):
         """Handle arm exercise selection and launch the exercise program."""
